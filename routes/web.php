@@ -2,6 +2,10 @@
 
 /** @var \Laravel\Lumen\Routing\Router $router */
 
+use App\Models\Mahasiswa;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
+
 /*
 |--------------------------------------------------------------------------
 | Application Routes
@@ -13,6 +17,24 @@
 |
 */
 
-$router->get('/', function () use ($router) {
-    return $router->app->version();
+$router->get("/", function () use ($router) {
+    return app()->version();
+});
+
+$router->get('/mahasiswa/{nim}/matakuliah/{id}', function (Request $request, $nim, $id) use ($router) {
+    $mahasiswa = Mahasiswa::find($nim);
+    $mahasiswa->matakuliahs()->attach([$id]);
+    return $mahasiswa->load('matakuliahs', "prodi");
+});
+
+$router->get('/post', function () use ($router) {
+    $mahasiswa = Mahasiswa::create([
+        "nim" => "10923810923",
+        "nama" => "sdaaksd",
+        "angkatan" => 2020,
+        "password" => Hash::make("password"),
+        "prodi_id" => 1,
+    ]);
+
+    return $mahasiswa;
 });

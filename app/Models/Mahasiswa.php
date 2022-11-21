@@ -22,7 +22,7 @@ class Mahasiswa extends Model implements AuthenticatableContract, AuthorizableCo
      * @var string[]
      */
     protected $fillable = [
-        "nim", 'nama', 'email', "angkatan", "password"
+        "nim", 'nama',  "angkatan", "password"
     ];
 
     /**
@@ -43,6 +43,6 @@ class Mahasiswa extends Model implements AuthenticatableContract, AuthorizableCo
 
     public function matakuliahs()
     {
-        return $this->belongsToMany(Mahasiswa::class, "mahasiswa_matakuliah", "id", "nim");
+        return $this->belongsToMany(Matakuliah::class, "mahasiswa_matakuliah", "mhsNim", "mkId");
     }
 }
