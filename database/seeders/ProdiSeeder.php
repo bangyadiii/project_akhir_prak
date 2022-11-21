@@ -25,6 +25,6 @@ class ProdiSeeder extends Seeder
             ["nama" => "Teknik Komputer"],
         ];
 
-        Prodi::factory()->createMany($prodi);
+        Prodi::insert($prodi);
     }
 }

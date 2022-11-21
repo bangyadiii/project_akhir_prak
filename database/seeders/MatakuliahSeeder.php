@@ -22,6 +22,6 @@ class MatakuliahSeeder extends Seeder
             ["nama" => "Jaringan dan Komputer Dasar"],
         ];
 
-        Matakuliah::factory()->createMany($mk);
+        Matakuliah::insert($mk);
     }
 }

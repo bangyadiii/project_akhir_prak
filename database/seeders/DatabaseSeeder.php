@@ -21,6 +21,7 @@ class DatabaseSeeder extends Seeder
             MatakuliahSeeder::class,
             ProdiSeeder::class,
         ]);
+        $prodi = Prodi::all()->toArray();
         $mahasiswas = Mahasiswa::factory()->count(100)->create();
     }
 }

@@ -13,8 +13,9 @@ class Mahasiswa extends Model implements AuthenticatableContract, AuthorizableCo
 {
     use Authenticatable, Authorizable, HasFactory;
 
-    public $primaryKey = "nim";
+    protected $primaryKey = "nim";
     public $incrementing = false;
+    public $keyType = 'string';
     /**
      * The attributes that are mass assignable.
      *

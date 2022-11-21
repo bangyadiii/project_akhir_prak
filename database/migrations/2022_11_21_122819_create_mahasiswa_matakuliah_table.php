@@ -14,8 +14,9 @@ return new class extends Migration
     public function up()
     {
         Schema::create('mahasiswa_matakuliah', function (Blueprint $table) {
-            $table->foreignId("mhsNim")->constrained("mahasiswas", "nim")->nullOnDelete();
-            $table->foreignId("mkId")->constrained("mahasiswas", "nim")->nullOnDelete();
+            $table->string("mhsNim");
+            $table->foreignId("mkId")->constrained("matakuliahs", "id")->onDelete("cascade");
+            $table->foreign("mhsNim")->references('nim')->on("mahasiswas")->onDelete("cascade");
             $table->primary(["mhsNim", "mkId"]);
         });
     }
