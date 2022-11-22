@@ -41,7 +41,7 @@ class Mahasiswa extends Model implements AuthenticatableContract, AuthorizableCo
         return $this->belongsTo(Prodi::class);
     }
 
-    public function matakuliahs()
+    public function matakuliah()
     {
         return $this->belongsToMany(Matakuliah::class, "mahasiswa_matakuliah", "mhsNim", "mkId");
     }

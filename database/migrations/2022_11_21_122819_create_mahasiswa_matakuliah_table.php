@@ -14,11 +14,10 @@ return new class extends Migration
     public function up()
     {
         Schema::create('mahasiswa_matakuliah', function (Blueprint $table) {
-            $table->id();
             $table->string("mhsNim");
             $table->foreignId("mkId")->constrained("matakuliahs", "id")->onDelete("cascade");
             $table->foreign("mhsNim")->references("nim")->on("mahasiswas")->onDelete("cascade");
-            $table->unique(["mhsNim", "mkId"]);
+            $table->primary(["mhsNim", "mkId"]);
         });
     }
 
