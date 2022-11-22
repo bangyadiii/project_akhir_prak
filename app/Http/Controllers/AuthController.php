@@ -37,6 +37,7 @@ class AuthController extends Controller
     {
         $nim = $request->nim;
         $password = $request->password;
+        // $token = $request->token;
 
         $user = Mahasiswa::where('nim', $nim)->first();
 
@@ -58,11 +59,12 @@ class AuthController extends Controller
         $user->save();
 
         return response()->json([
-        'status' => 'Success',
-        'message' => 'successfully login',
-        'data' => [
-            'user' => $user,
-        ]
+        'success' => true,
+        'message' => 'Successfully logged in',
+        'token' =>$user->token ,
+        // 'data' => [
+        //     'user' => $user,
+        // ]
         ], 200);
     }
 
