@@ -16,7 +16,16 @@ use Illuminate\Support\Facades\Hash;
 | and give it the Closure to call when that URI is requested.
 |
 */
+$router->get('/home', ['middleware' => 'jwt.auth', 'uses' => 'HomeController@home']);
+// $router->get('/auth/login', [
+//     'as'=>'route.auth.login', function() {
+//         return "Selamat, Anda berhasil login";
+// }]);
 
+$router->group(['prefix' => 'auth'], function () use ($router) {
+    $router->post('/register', ['uses'=> 'AuthController@register']);
+    $router->post('/login', ['uses'=> 'AuthController@login']);
+});
 $router->get("/", function () use ($router) {
     return app()->version();
 });
