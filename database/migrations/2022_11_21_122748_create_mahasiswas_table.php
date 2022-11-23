@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string("nama");
             $table->integer('angkatan');
             $table->string("password");
-            $table->foreignId("prodi_id")->constrained("prodis")->cascadeOnDelete();
+            $table->foreignId("prodi_id")->nullable()->constrained("prodis")->cascadeOnDelete();
             $table->timestamps();
         });
     }
