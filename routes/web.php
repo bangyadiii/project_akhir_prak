@@ -16,34 +16,11 @@ use Illuminate\Support\Facades\Hash;
 | and give it the Closure to call when that URI is requested.
 |
 */
-$router->get('/home', ['middleware' => 'jwt.auth', 'uses' => 'HomeController@home']);
-// $router->get('/auth/login', [
-//     'as'=>'route.auth.login', function() {
-//         return "Selamat, Anda berhasil login";
-// }]);
 
 $router->group(['prefix' => 'auth'], function () use ($router) {
-    $router->post('/register', ['uses'=> 'AuthController@register']);
-    $router->post('/login', ['uses'=> 'AuthController@login']);
-});
-$router->get("/", function () use ($router) {
-    return app()->version();
+    $router->post('/register', ['uses' => 'AuthController@register']);
+    $router->post('/login', ['uses' => 'AuthController@login']);
 });
 
-$router->get('/mahasiswa/{nim}/matakuliah/{id}', function (Request $request, $nim, $id) use ($router) {
-    $mahasiswa = Mahasiswa::find($nim);
-    $mahasiswa->matakuliahs()->attach([$id]);
-    return $mahasiswa->load('matakuliahs', "prodi");
-});
-
-$router->get('/post', function () use ($router) {
-    $mahasiswa = Mahasiswa::create([
-        "nim" => "10923810923",
-        "nama" => "sdaaksd",
-        "angkatan" => 2020,
-        "password" => Hash::make("password"),
-        "prodi_id" => 1,
-    ]);
-
-    return $mahasiswa;
-});
+$router->get("/prodi", "ProdiController@index");
+$router->get("/matakuliah", "MatakulaihController@index");
