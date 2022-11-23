@@ -23,4 +23,4 @@ $router->group(['prefix' => 'auth'], function () use ($router) {
 });
 
 $router->get("/prodi", "ProdiController@index");
-$router->get("/matakuliah", "MatakulaihController@index");
+$router->get("/matakuliah", "MatakuliahController@index");
