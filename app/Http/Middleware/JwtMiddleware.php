@@ -15,7 +15,6 @@ class JwtMiddleware
   function handle($request, Closure $next, $guard = null)
   {
     $token = $request->header('token') ?? $request->query('token');
-    // $token = $request->get('token');
 
     if (!$token) {
       //Unauthorized response if token not there
