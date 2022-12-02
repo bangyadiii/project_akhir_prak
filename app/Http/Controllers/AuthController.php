@@ -21,11 +21,11 @@ class AuthController extends Controller
   
       $this->request = $request;
     }
-    protected function jwt(Mahasiswa $user)
+    protected function jwt(Mahasiswa $mahasiswa)
     {
         $payload = [
         'iss' => 'lumen-jwt', //issuer of the token
-        'sub' => $user->id, //subject of the token
+        'sub' => $mahasiswa->nim, //subject of the token
         'iat' => time(), //time when JWT was issued.
         'exp' => time() + 60 * 60 //time when JWT will expire
         ];
@@ -38,32 +38,32 @@ class AuthController extends Controller
         $nim = $request->nim;
         $password = $request->password;
         // $token = $request->token;
-
-        $user = Mahasiswa::where('nim', $nim)->first();
-
-        if (!$user) {
+        // return $password;
+        $mahasiswa = Mahasiswa::where('nim', $nim)->first();
+        // return $mahasiswa->password;
+        if (!$mahasiswa) {
         return response()->json([
             'status' => 'Error',
-            'message' => 'user not exist',
+            'message' => 'mahasiswa not exist',
         ], 404);
         }
 
-        if (!Hash::check($password, $user->password)) {
+        if (!Hash::check($password, $mahasiswa->password)) {
         return response()->json([
             'status' => 'Error',
             'message' => 'wrong password',
         ], 400);
         }
 
-        $user->token = $this->jwt($user); //
-        $user->save();
+        $mahasiswa->token = $this->jwt($mahasiswa); //
+        $mahasiswa->save();
 
         return response()->json([
         'success' => true,
         'message' => 'Successfully logged in',
-        'token' =>$user->token ,
+        'token' =>$mahasiswa->token ,
         // 'data' => [
-        //     'user' => $user,
+        //     'mahasiswa' => $mahasiswa,
         // ]
         ], 200);
     }
@@ -78,7 +78,7 @@ class AuthController extends Controller
         $prodi_id = $request->prodi_id;
         $password = Hash::make($request->password);
 
-        $user = Mahasiswa::create([
+        $mahasiswa = Mahasiswa::create([
             'nim' => $nim,
             'nama' => $nama,
             'angkatan' => $angkatan,
@@ -88,9 +88,9 @@ class AuthController extends Controller
 
         return response()->json([
             'status' => 'Success',
-            'message' => 'new user created',
+            'message' => 'new mahasiswa created',
             'data' => [
-                'user' => $user,
+                'mahasiswa' => $mahasiswa,
             ]
         ],200);
     }

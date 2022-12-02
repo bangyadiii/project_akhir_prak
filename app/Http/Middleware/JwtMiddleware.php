@@ -36,9 +36,9 @@ class JwtMiddleware
       ], 400);
     }
 
-    $user = Mahasiswa::find($credentials->sub);
+    $mahasiswa = Mahasiswa::findOrFail($credentials->sub);
 
-    $request->user = $user;
+    $request->mahasiswa = $mahasiswa;
     return $next($request);
   }
 }
