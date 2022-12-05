@@ -22,16 +22,19 @@ $router->group(['prefix' => 'auth'], function () use ($router) {
     $router->post('/login', ['uses' => 'AuthController@login']); // route login
 });
 
-$router->group(['prefix' => 'auth'], function () use ($router) {
-    $router->post('/register', ['uses' => 'AuthController@register']);
-    $router->post('/login', ['uses' => 'AuthController@login']);
-});
-
 $router->get("/prodi", "ProdiController@index");
 $router->get("/matakuliah", "MatakuliahController@index");
 
 $router->group(['prefix' => 'mahasiswa'], function () use ($router) {
     $router->get('/', ['uses' => 'MahasiswaController@index']);
-    $router->get('/profile', ['middleware' => 'jwt.auth','uses' => 'MahasiswaController@getProfile']);
+    $router->get('/profile', ['middleware' => 'jwt.auth', 'uses' => 'MahasiswaController@getProfile']);
     $router->get('/{nim}', ['uses' => 'MahasiswaController@getMahasiswaByNIM']);
+    $router->post('/{nim}/matakuliah/{mkId}', [
+        'middleware' => 'jwt.auth',
+        'uses' => 'MahasiswaController@tambahMatakuliah'
+    ]);
+    $router->put('/{nim}/matakuliah/{mkId}', [
+        'middleware' => 'jwt.auth',
+        'uses' => 'MahasiswaController@deleteMatakuliah'
+    ]);
 });

@@ -11,6 +11,10 @@ class MatakuliahController extends Controller
     public function index()
     {
         $mk = Matakuliah::all();
-        return \response()->json($mk, 200);
+        return \response()->json([
+            "success" => true,
+            "message" => "grabbed all mata kuliah",
+            "matakuliah" => $mk
+        ], 200);
     }
 }

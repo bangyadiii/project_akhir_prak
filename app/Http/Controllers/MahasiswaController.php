@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Mahasiswa;
+use App\Models\Matakuliah;
 use Illuminate\Http\Request;
 
 class MahasiswaController extends Controller
@@ -10,51 +11,59 @@ class MahasiswaController extends Controller
 
     public function index()
     {
-        $mahasiswa = Mahasiswa::all();
-        return \response()->json($mahasiswa, 200);
+        $mahasiswa = Mahasiswa::with('prodi', "matakuliah")->get();
+
+        return \response()->json([
+            "success" => true,
+            "message" => "grabbed all mahasiswa",
+            "mahasiswa" => $mahasiswa
+        ], 200);
     }
 
     public function getProfile(Request $request)
     {
         $mahasiswa = $request->mahasiswa;
-        $mahasiswa = Mahasiswa::find($mahasiswa->nim);
+
         return response()->json([
             'success' => true,
-            'message' => 'All post grabbed',
-            'data' => [
-            'mahasiswa' => [
-                'nim' => $mahasiswa->nim,
-                'nama' => $mahasiswa->nama,
-                'angkatan' => $mahasiswa->angkatan,
-                'prodi_id' => $mahasiswa->prodi_id,
-                'created_at' => $mahasiswa->created_at,
-                'updated_at' => $mahasiswa->updated_at,
-                'token' => $mahasiswa->token,
-            ]
-        ]
+            'message' => 'grabbed mahasiswa by token',
+            'mahasiswa' =>  $mahasiswa->makeHidden("token")
         ], 200);
     }
 
     public function getMahasiswaByNIM(Request $request)
     {
-        $mahasiswa = Mahasiswa::find($request->nim);
+        $mahasiswa = Mahasiswa::with('prodi', 'matakuliah')->find($request->nim);
         return response()->json([
             'success' => true,
             'message' => 'All post grabbed',
-            'data' => [
-            'mahasiswa' => [
-                'nim' => $mahasiswa->nim,
-                'nama' => $mahasiswa->nama,
-                'angkatan' => $mahasiswa->angkatan,
-                'prodi_id' => $mahasiswa->prodi_id,
-                'created_at' => $mahasiswa->created_at,
-                'updated_at' => $mahasiswa->updated_at,
-                'token' => $mahasiswa->token,
-            ]
-        ]
+            'mahasiswa' => $mahasiswa
         ], 200);
     }
 
-    
-}
+    public function tambahMatakuliah($nim, $mkId)
+    {
+        $mhs = Mahasiswa::findOrFail($nim);
+        $mk = Matakuliah::findOrFail($mkId);
 
+        $mhs->matakuliah()->attach($mk->id);
+
+        return \response()->json([
+            "success" => true,
+            "message" => "Matakuliah added to mahasiswa"
+        ]);
+    }
+
+    public function deleteMatakuliah($nim, $mkId)
+    {
+        $mhs = Mahasiswa::findOrFail($nim);
+        $mk = Matakuliah::findOrFail($mkId);
+
+        $mhs->matakuliah()->detach($mk->id);
+
+        return \response()->json([
+            "success" => true,
+            "message" => "Matakuliah deleted to mahasiswa"
+        ]);
+    }
+}
