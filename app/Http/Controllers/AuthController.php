@@ -83,7 +83,7 @@ class AuthController extends Controller
         ]);
 
         return response()->json([
-            'status' => 'Success',
+            'success' => true,
             'message' => 'new mahasiswa created',
             'data' => [
                 'mahasiswa' => $mahasiswa,
