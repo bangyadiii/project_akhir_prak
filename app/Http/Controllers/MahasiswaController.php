@@ -41,10 +41,17 @@ class MahasiswaController extends Controller
         ], 200);
     }
 
-    public function tambahMatakuliah($nim, $mkId)
+    public function tambahMatakuliah(Request $request, $nim, $mkId)
     {
         $mhs = Mahasiswa::findOrFail($nim);
         $mk = Matakuliah::findOrFail($mkId);
+
+        if ($request->mahasiswa->nim !== $mhs->nim) {
+            return \response()->json([
+                "success" => false,
+                "message" => "Matakuliah added to mahasiswa"
+            ]);
+        }
 
         $mhs->matakuliah()->attach($mk->id);
 
@@ -54,10 +61,17 @@ class MahasiswaController extends Controller
         ]);
     }
 
-    public function deleteMatakuliah($nim, $mkId)
+    public function deleteMatakuliah(Request $request, $nim, $mkId)
     {
         $mhs = Mahasiswa::findOrFail($nim);
+
         $mk = Matakuliah::findOrFail($mkId);
+        if ($request->mahasiswa->nim !== $nim) {
+            return \response()->json([
+                "success" => false,
+                "message" => "gagal"
+            ]);
+        }
 
         $mhs->matakuliah()->detach($mk->id);
 
